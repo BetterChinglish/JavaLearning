@@ -23,9 +23,13 @@ public class Test {
         // 此时访问p1指针中的变量与访问p1中的方法时，需要注意：
         // 访问变量： 编译看左边，运行也看左边；
         // 访问方法： 编译看左边，运行看右边
+        // 编译看左边是指去看左边有没有方法或变量
+        // 运行看右边是指最终调用的
 
-        // 如此处，虽然Student类有hobby，但是Person类，所以编译不通过，报错；
-        // p1.hobby = "喜欢打篮球";
+        // 如此处，虽然Student类有hobby，
+        // 但是变量person是Person类，而Person类没有hobby变量, 所以编译不通过，报错；
+         // Person person = new Student();
+         // person.hobby = "喜欢打篮球";
 
         // 此处Person与Student类都有hobby2这个变量，所以编译通过；
         // 但是p1是多态形式的访问Student类型的对象的变量，所以运行的时候看左边，也就是说看Person p1 = s1;的等于号的左边，即访问Person中的hobby1

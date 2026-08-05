@@ -8,7 +8,29 @@ public class HelloWorld {
   public static void main(String[] args) {
     // numFunc();
 
-    arrFunc();
+    // arrFunc();
+
+    System.out.println(getSum(10, 20));
+    System.out.println(getSum(1,2,3));
+
+    short s1 = 5, s2 = 127;
+    System.out.println(getSum(s1, s2));
+  }
+
+  // 方法重载： 同一个类下的方法名字相同，参数不同（参数类型、参数个数）
+  public static int getSum(int a, int b) {
+    System.out.println("int 2 params");
+    return a + b;
+  }
+
+  public static int getSum(int a, int b, int c) {
+    System.out.println("int 3 params");
+    return a + b + c;
+  }
+
+  public static int getSum(short a, short b) {
+    System.out.println("short 2 params");
+    return a + b;
   }
 
   public static void arrFunc() {
