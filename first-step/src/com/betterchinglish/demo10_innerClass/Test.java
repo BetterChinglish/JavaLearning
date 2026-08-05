@@ -3,6 +3,11 @@ package com.betterchinglish.demo10_innerClass;
 public class Test {
   public static void main(String[] args) {
 
+    innerClass();
+
+  }
+
+  public static void innerClass() {
     // 内部类创建与获取其对象
     Car.Engine engine = new Car().new Engine();
     engine.show();
