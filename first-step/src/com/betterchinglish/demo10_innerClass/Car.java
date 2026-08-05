@@ -25,5 +25,19 @@ public class Car {
     }
   }
 
+  public Tire getTileInstance(String band, int size) {
+    return new Tire(band, size);
+  }
+
+  private class Tire {
+    String band;
+    int size;
+
+    public Tire(String band, int size) {
+      this.band = band;
+      this.size = size;
+    }
+  }
+
 
 }

@@ -6,5 +6,8 @@ public class Test {
     Car.Engine engine = new Car().new Engine();
     engine.show();
 
+    Object tire = new Car().getTileInstance("米其林", 27);
+    System.out.println(tire);
+
   }
 }
