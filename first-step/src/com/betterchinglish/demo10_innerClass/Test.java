@@ -16,5 +16,10 @@ public class Test {
     Car.StaticInnerClass sic = new Car.StaticInnerClass();
     sic.show1();
     Car.StaticInnerClass.show2();
+
+
+    System.out.println("---------局部内部类---------");
+    // 局部内部类
+    new Car().show();
   }
 }
