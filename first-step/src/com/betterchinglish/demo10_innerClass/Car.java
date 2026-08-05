@@ -39,5 +39,15 @@ public class Car {
     }
   }
 
+  static class StaticInnerClass {
+    void show1() {
+      System.out.println("show 1");
+    }
+
+    static void show2() {
+      System.out.println("static show 2");
+    }
+  }
+
 
 }
