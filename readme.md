@@ -137,3 +137,34 @@ while (m.find()) System.out.println(m.group()); // 123  456
 
 > 完整可运行示例见 `first-step/src/com/betterchinglish/demo15_Regex/Test.java`。
 
+
+# Collection 体系全景
+
+Java 中的单列集合根接口为 `java.util.Collection`，继承自 `Iterable`。包含三大主要分支：`List`、`Set`、`Queue`。
+
+## 1. 体系对比速查表
+
+| 接口 | 特性 | 典型实现类 | 核心底层结构与特点 |
+| :--- | :--- | :--- | :--- |
+| **`List`** | 有序、可重复、有索引 | `ArrayList` | 动态数组，查询 $O(1)$，扩容 1.5 倍 |
+| | | `LinkedList` | 双向链表，头尾增删 $O(1)$，查询 $O(n)$ |
+| **`Set`** | 无序（不保证存取一致）、不可重复、无索引 | `HashSet` | 基于 `HashMap`，去重依赖 `hashCode` + `equals` |
+| | | `LinkedHashSet` | 在哈希表基础上维护双向链表，记录插入顺序 |
+| | | `TreeSet` | 基于红黑树（`TreeMap`），支持自然排序与定制排序 |
+| **`Queue`** | 先进先出（FIFO）队列 | `LinkedList` | 单向队列操作（`offer/poll/peek`） |
+| **`Deque`** | 双端队列（可作为高效栈） | `ArrayDeque` | 循环数组，现代官方推荐替代 `Stack` |
+| | 优先级队列 | `PriorityQueue` | 二叉堆（默认小顶堆，可配大顶堆） |
+
+## 2. 遍历删除死坑：fail-fast 机制
+- **现象**：在增强 for 循环（`for-each`）中调用 `list.remove()` 会触发 `ConcurrentModificationException`。
+- **原因**：增强 for 底层调用迭代器，迭代器通过 `expectedModCount` 校验集合结构修改次数；直接调用集合自身的 `remove` 只改变了集合内部的 `modCount`，导致两值不等。
+- **解决**：
+  1. 使用 `Iterator.remove()`（会自动同步两者）。
+  2. 使用 Java 8+ `list.removeIf(Predicate)`。
+
+## 3. 集合添加是否有顺序？（存取顺序 vs 大小排序 vs 无序）
+- **存取顺序（Insertion Order）**：存入先后等于取出先后。`ArrayList`、`LinkedList`、`LinkedHashSet`、`ArrayDeque` 强保证。
+- **大小排序（Sorted Order）**：按元素大小重新排序，不保留存入先后。`TreeSet`、`PriorityQueue`（堆优先级）。
+- **无序（Unordered）**：`HashSet` 顺序完全由对象的 `hashCode` 和哈希桶下标决定，不等于存入顺序，且扩容（rehash）后可能重排。“无序”不等于“随机乱变”。
+
+> 完整可运行教学体系见 `first-step/src/com/betterchinglish/demo16_Collection/Test.java`。
