@@ -60,6 +60,35 @@
 | **时间复杂度** | 增删查 **$O(1)$** | 增删查 **$O(1)$**（略有一点链表指针开销） | 增删查 **$O(\log n)$**（二叉平衡树检索） |
 | **典型应用场景** | 纯粹去重且不在乎任何顺序的高性能场景 | 既要**去重**又要**保持输入先后顺序** | 需要集合元素**随时随地自动排好序** |
 
+### 4.1 TreeSet 深度解密：到底调用 compare 还是 compareTo？
+
+`TreeSet` 底层依托 `TreeMap.put` 实现，比较调用逻辑**遵循严密的优先级分支**：
+
+```
+                              TreeSet.add(e)
+                                    │
+                  ┌─────────────────┴─────────────────┐
+     构造时传入了 Comparator？               构造时未传入 Comparator (无参构造)
+                  │                                   │
+                  ▼                                   ▼
+        调用 comparator.compare()          强制将元素强转为 (Comparable)
+                  │                                   │
+   元素【不需要】实现 Comparable 接口        若元素未实现 Comparable 接口
+   若元素也实现了，其 compareTo 会被完全覆盖!          ▼ 直接抛出运行期异常！
+                                            ClassCastException: cannot be cast to Comparable
+```
+
+1. **没有传入 `Comparator` 时**：
+   - 走**自然排序**，强制要求元素必须实现 `Comparable` 接口并重写 `compareTo(T o)`。
+   - 若元素没有实现 `Comparable`，在第一次添加或比较时直接抛出 `ClassCastException`。
+2. **传入了 `Comparator` 时**：
+   - 走**定制排序**，强制调用 `comparator.compare(o1, o2)`。
+   - 此时元素**完全不需要**实现 `Comparable` 接口，甚至第三方不可修改源码的类也能放入。
+3. **两者并存时**：
+   - 外部传入的 `Comparator` 具有**绝对最高优先级**，元素自身的 `compareTo` 会被彻底忽略。
+4. **判重/去重唯一依据**：
+   - 仅依据比较器返回值是否为 0（`cmp == 0`）。**完全不调用元素的 `equals()` 和 `hashCode()`**！若两个对象属性不同但比较器返回 0，后加入的对象会被直接吃掉（判定为重复）。
+
 ---
 
 ## 5. Queue 与 Deque 体系对比：先进先出、双端队列与堆
