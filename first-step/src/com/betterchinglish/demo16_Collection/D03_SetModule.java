@@ -67,10 +67,14 @@ public class D03_SetModule {
         for (Student s : stuSet) {
             System.out.println("   " + s);
         }
-        System.out.println("【核心原理】HashSet 添加元素时：");
-        System.out.println("  1. 计算对象的 hashCode() 确定在哈希表中的桶位置。");
-        System.out.println("  2. 若位置为空直接放入；若冲突，进一步调用 equals()。");
-        System.out.println("  3. 只有当 hashCode 相同 且 equals 返回 true 时，才判定为重复而不加入！");
+        System.out.println("【核心原理】HashSet 添加元素底层流程（对应课程 13 核心考点）：");
+        System.out.println("  1. 底层存储：HashSet 本质是对 HashMap 的包装，元素存为 Map 的 Key，Value 是一个无意义的固定 Object PRESENT。");
+        System.out.println("  2. 高位扰动函数：(h = key.hashCode()) ^ (h >>> 16)，将哈希值的高 16 位与低 16 位进行异或，大幅降低低位碰撞概率。");
+        System.out.println("  3. 桶寻址优化：index = (table.length - 1) & hash，用位与运算替代取模运算（高效，要求容量必为 2 的幂次方）。");
+        System.out.println("  4. 碰撞与树化机制（JDK 8+）：");
+        System.out.println("     - 若桶为空直接存入 Node 节点。");
+        System.out.println("     - 若冲突，通过 equals() 比对：返回 true 则覆盖，返回 false 则尾插法挂入链表。");
+        System.out.println("     - 树化条件：当单条链表长度 >= 8 且 数组总容量 >= 64 时，链表转为红黑树；若容量 < 64 则优先扩容数组！");
 
         /* =========================================================
          * 2. LinkedHashSet：维护双向链表，保持插入顺序

@@ -54,6 +54,26 @@ public class D05_IteratorAndFailFastModule {
         list.forEach(item -> System.out.print(item + " "));
         System.out.println();
 
+        // 方式 E: ListIterator 列表迭代器（List 专属第 5 种遍历方式）
+        // 特点：支持双向遍历（向前/向后）、支持在迭代过程中进行 set(修改) 和 add(添加)
+        System.out.print("方式 E (ListIterator 反向遍历): ");
+        java.util.ListIterator<String> listIt = list.listIterator(list.size()); // 从末尾位置开始
+        while (listIt.hasPrevious()) {
+            System.out.print(listIt.previous() + " ");
+        }
+        System.out.println();
+
+        // ListIterator 遍历中增改演示（不会触发 ConcurrentModificationException！）
+        java.util.ListIterator<String> editIt = list.listIterator();
+        while (editIt.hasNext()) {
+            String val = editIt.next();
+            if ("Java".equals(val)) {
+                editIt.set("Java21"); // 迭代中安全修改当前元素
+                editIt.add("Scala");  // 迭代中安全插入新元素
+            }
+        }
+        System.out.println("   ListIterator 增改后的 list: " + list);
+
         /* =========================================================
          * 2. 经典死坑：循环遍历时直接删除元素抛出 ConcurrentModificationException
          * ========================================================= */

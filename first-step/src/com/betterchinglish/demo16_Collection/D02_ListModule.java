@@ -37,21 +37,22 @@ public class D02_ListModule {
         System.out.println("删除索引 0 后: " + list);
 
         /* =========================================================
-         * 2. ArrayList 底层原理与扩容机制剖析
+         * 2. ArrayList 底层原理与扩容机制剖析（对应课程 06）
          * ========================================================= */
         System.out.println("\n--- 2. ArrayList 底层扩容原理解析 ---");
         System.out.println("【底层结构】底层是 Object[] elementData 动态数组。");
-        System.out.println("【无参构造】new ArrayList<>() 时，初始化为空数组 {}，不分配内存。");
-        System.out.println("【首次添加】第一次 add 时，初始化默认容量 DEFAULT_CAPACITY = 10。");
-        System.out.println("【扩容算法】当容量不足时触发 grow()：");
-        System.out.println("            新容量 = oldCapacity + (oldCapacity >> 1)  -> 即扩容为原先的 1.5 倍。");
-        System.out.println("【内存迁移】底层使用 Arrays.copyOf()，本质调用 System.arraycopy 底层本地方法。");
+        System.out.println("【无参构造】new ArrayList<>() 时，elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA（空数组 {}，延迟分配）。");
+        System.out.println("【首次添加】第一次 add 时，扩容并分配默认容量 DEFAULT_CAPACITY = 10。");
+        System.out.println("【扩容算法】当容量不足时触发 grow(minCapacity)：");
+        System.out.println("            int newCapacity = oldCapacity + (oldCapacity >> 1)  -> 即扩容为原先的 1.5 倍。");
+        System.out.println("【最大容量】MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8（保留 8 个机器字存放对象头信息）。");
+        System.out.println("【内存迁移】底层使用 Arrays.copyOf()，本质调用本地方法 System.arraycopy。");
         System.out.println("【优缺权衡】查找快 O(1)（连续内存寻址）；插入/删除非尾部元素慢 O(n)（需要批量平移）。");
 
         /* =========================================================
-         * 3. LinkedList：双向链表与头尾特有操作
+         * 3. LinkedList：双向链表与头尾特有操作（对应课程 07）
          * ========================================================= */
-        System.out.println("\n--- 3. LinkedList 双向链表特性 ---");
+        System.out.println("\n--- 3. LinkedList 双向链表特性与源码寻址优化 ---");
         // 使用具体的 LinkedList 类型以访问其头尾专属 API
         LinkedList<String> linkedList = new LinkedList<>();
         linkedList.add("A");
@@ -68,6 +69,13 @@ public class D02_ListModule {
         linkedList.removeFirst(); // 移除首节点
         linkedList.removeLast();  // 移除尾节点
         System.out.println("移除头尾后: " + linkedList);
+
+        System.out.println("【LinkedList 源码设计精要】");
+        System.out.println("  1. 内部节点定义：private static class Node<E> { E item; Node<E> next; Node<E> prev; }");
+        System.out.println("  2. node(index) 寻址折半优化：");
+        System.out.println("     if (index < (size >> 1)) 从 first 节点向后顺序遍历查找；");
+        System.out.println("     else 从 last 节点向前反向遍历查找。");
+        System.out.println("     虽然做了折半优化，但平均时间复杂度仍为 O(n)，随机访问效率远低于 ArrayList。");
 
         /* =========================================================
          * 4. 易错点：Arrays.asList 与 List.of (Java 9+) 的不可变坑
