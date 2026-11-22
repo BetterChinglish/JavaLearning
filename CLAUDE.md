@@ -41,7 +41,8 @@ first-step/src/
     ├── demo14_BigDecimal/                    # BigDecimal 任意精度浮点数、舍入模式与底层模型 (Test)
     ├── demo15_Regex/                         # 正则表达式与 Pattern / Matcher 匹配/提取/替换 (Test)
     ├── demo16_Collection/                    # Collection 单列集合体系全套实战教学与 fail-fast 避坑 (Test, D01-D09)
-    └── demo17_Map/                           # Map 双列集合体系（HashMap源码四部曲、LRU、TreeMap红黑树与Collections）(Test, D01-D07)
+    ├── demo17_Map/                           # Map 双列集合体系（HashMap源码四部曲、LRU、TreeMap红黑树与Collections）(Test, D01-D07)
+    └── demo18_Stream/                        # Stream 流式编程体系（流水线思想、中间与终结操作、collect超详解、三大综合实战）(Test, D01-D08)
 ```
 
 根目录下 `readme.md` 包含重点主题的深度原理总结（如 `BigDecimal` 内部模型 `unscaledValue × 10^(-scale)`、正则表达式分组贪婪懒惰等）。

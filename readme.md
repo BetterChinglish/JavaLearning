@@ -226,3 +226,30 @@ Java 中的单列集合根接口为 `java.util.Collection`，继承自 `Iterable
 - **无序（Unordered）**：`HashSet` 顺序完全由对象的 `hashCode` 和哈希桶下标决定，不等于存入顺序，且扩容（rehash）后可能重排。“无序”不等于“随机乱变”。
 
 > 完整可运行教学体系见 `first-step/src/com/betterchinglish/demo16_Collection/Test.java`。
+
+# Map 双列集合体系全景
+
+Java 中的双列集合顶层接口为 `java.util.Map<K, V>`，存储 Key-Value 键值对映射关系。Key 唯一不可重复，Value 允许重复。
+
+## 1. 核心实现类对比
+- **`HashMap`**：哈希表实现（数组+链表+红黑树），查询 $O(1)$，无序，允许 1 个 null 键。
+- **`LinkedHashMap`**：在哈希表基础上维护双向链表，保证存取顺序或访问顺序（可手写 LRU 缓存）。
+- **`TreeMap`**：红黑树实现，键按大小排好序，查询 $O(\log n)$，不允许 null 键。
+
+> 完整可运行教学体系见 `first-step/src/com/betterchinglish/demo17_Map/Test.java`。
+
+# Stream 流式编程体系
+
+Java 8 引入的 `java.util.stream.Stream`，将集合、数组等数据源抽象为流水线，采用声明式编程，极大简化了过滤、转换、聚合与分组统计操作。
+
+## 1. 核心操作三步走
+1. **获取流（Source）**：`list.stream()`, `map.entrySet().stream()`, `Arrays.stream(arr)`。
+2. **中间操作（Intermediate）**：`filter`, `map`, `distinct`, `sorted`, `limit`, `skip`。**具有惰性求值特征**，无终结操作时不执行。
+3. **终结操作（Terminal）**：`forEach`, `count`, `reduce`, `anyMatch`, `collect`。触发计算，流关闭不可复用。
+
+## 2. 收集器与生产避坑
+- **收集到 Map 冲突**：调用 `Collectors.toMap` 时务必提供合并函数 `(v1, v2) -> v2`，防止重复键抛出 `IllegalStateException`。
+- **基本类型数组陷阱**：`int[]` 传给 `Stream.of(arr)` 会被整体当作一个元素对象，正确获取应使用 `Arrays.stream(intArr)` 得到 `IntStream`。
+
+> 完整可运行教学体系见 `first-step/src/com/betterchinglish/demo18_Stream/Test.java`。
+
