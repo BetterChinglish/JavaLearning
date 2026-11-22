@@ -253,3 +253,23 @@ Java 8 引入的 `java.util.stream.Stream`，将集合、数组等数据源抽�
 
 > 完整可运行教学体系见 `first-step/src/com/betterchinglish/demo18_Stream/Test.java`。
 
+# Java 异常处理机制（Exception Handling）
+
+Java 提供了以 `Throwable` 为根类的异常处理机制，包含 `Error`（严重系统故障）与 `Exception`（可处理异常）。
+
+## 1. 编译时异常 vs 运行时异常
+- **运行时异常（Unchecked）**：继承自 `RuntimeException`，编译不报错，通常源于程序员的逻辑漏洞（如越界、空指针、除零），应通过代码校验防御。
+- **编译时异常（Checked）**：继承自 `Exception` 但不继承 `RuntimeException`，编译器强制要求必须处理（`try-catch` 或 `throws`）。
+
+## 2. 捕获异常“灵魂四问”
+1. **try 中无问题**：执行完 try 中所有语句，完全不走 catch。
+2. **try 中多问题**：写多个 catch，**子类异常在上，父类异常在下**。
+3. **未被捕获**：相当于白写，交由 JVM 默认处理（红字打印堆栈并强行中断程序）。
+4. **报错后下方代码**：try 中报错行之后的语句**立即废止不再执行**，直接跳转对应 catch。
+
+## 3. throw vs throws
+- `throw`：写在方法体内，具体动作，实例化并扔出异常对象，立即强行打断方法。
+- `throws`：写在方法签名上，预警声明，向调用方告知可能抛出的受检异常，不阻断方法本身。
+
+> 完整可运行教学体系见 `first-step/src/com/betterchinglish/demo20_Exception/Test.java`。
+
